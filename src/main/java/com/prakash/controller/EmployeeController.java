@@ -12,7 +12,11 @@ import org.springframework.web.servlet.ModelAndView;
 import com.prakash.entity.Employee;
 import com.prakash.service.EmployeeService;
 
- @Controller
+ /**
+ * @author prakashreddy
+ *
+ */
+@Controller
 public class EmployeeController {
 	
 	private static final Logger logger = Logger.getLogger(EmployeeController.class);
