@@ -3,20 +3,23 @@ import java.util.List;
 
 import org.jboss.logging.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.MediaType;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.servlet.ModelAndView;
 
 import com.prakash.entity.Employee;
 import com.prakash.service.EmployeeService;
 
  /**
- * @author prakashreddy
+ * @author prakashreddyreddy
  *
  */
-@Controller
+@RestController
 public class EmployeeController {
 	
 	private static final Logger logger = Logger.getLogger(EmployeeController.class);
@@ -28,13 +31,14 @@ public class EmployeeController {
     @Autowired
     private EmployeeService employeeService;
 
-    @RequestMapping("createEmployee")
-    public ModelAndView createEmployee(@ModelAttribute Employee employee) {
+  @RequestMapping(value="/createEmployee",method=RequestMethod.POST,produces=MediaType.APPLICATION_JSON_VALUE)
+ 
+     public ModelAndView createEmployee(@ModelAttribute Employee employee) {
     	logger.info("Creating Employee. Data: "+employee);
         return new ModelAndView("employeeForm");
     }
     
-    @RequestMapping("editEmployee")
+    @RequestMapping(value="/editEmployee",method=RequestMethod.PUT,produces=MediaType.APPLICATION_JSON_VALUE)
     public ModelAndView editEmployee(@RequestParam long id, @ModelAttribute Employee employee) {
     	logger.info("Updating the Employee for the Id "+id);
         employee = employeeService.getEmployee(id);
@@ -52,14 +56,15 @@ public class EmployeeController {
         return new ModelAndView("redirect:getAllEmployees");
     }
     
-    @RequestMapping("deleteEmployee")
+    @RequestMapping(value="/deleteEmployee",method=RequestMethod.DELETE,produces=MediaType.APPLICATION_JSON_VALUE)
     public ModelAndView deleteEmployee(@RequestParam long id) {
     	logger.info("Deleting the Employee. Id : "+id);
         employeeService.deleteEmployee(id);
         return new ModelAndView("redirect:getAllEmployees");
     }
     
-    @RequestMapping(value = {"getAllEmployees", "/"})
+   // @RequestMapping(value = {"getAllEmployees", "/"})
+    @RequestMapping(value="/",method=RequestMethod.GET,produces=MediaType.APPLICATION_JSON_VALUE)
     public ModelAndView getAllEmployees() {
     	logger.info("Getting the all Employees.");
         List<Employee> employeeList = employeeService.getAllEmployees();
